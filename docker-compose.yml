@@ -1,0 +1,40 @@
+version: "3"
+services:
+  spm:
+    image: zenoss/zing-spark:dev
+    build: .
+    environment:
+      SPARK_NO_DAEMONIZE: "true"
+      SPARK_MASTER_HOST: 0.0.0.0
+      SPARK_MASTER_PORT: 7077
+      SPARK_MASTER_WEBUI_PORT: 8080
+      SPARK_MASTER_OPTS: >-
+        -Dspark.deploy.defaultCores=3
+      SPARK_DAEMON_JAVA_OPTS: >-
+        -Dspark.deploy.recoveryMode=ZOOKEEPER
+        -Dspark.deploy.zookeeper.url=zk:2181
+        -Dspark.deploy.zookeeper.dir=/datapipeline/spark
+        -Dspark.eventLog.enabled=true
+        -Dspark.eventLog.dir=hdfs://hdfs-namenode:8020/spark-events
+    expose:
+      - 7077
+      - 8080
+    command: /opt/spark/sbin/start-master.sh
+  spw:
+    image: zenoss/zing-spark:dev
+    environment:
+      SPARK_NO_DAEMONIZE: "true"
+      SPARK_WORKER_PORT: 7078
+      SPARK_WORKER_WEBUI_PORT: 8081
+      SPARK_WORKER_OPTS: >-
+        -Dspark.worker.cleanup.enabled=true
+      SPARK_DAEMON_JAVA_OPTS: >-
+        -Dspark.deploy.recoveryMode=ZOOKEEPER
+        -Dspark.deploy.zookeeper.url=zk:2181
+        -Dspark.deploy.zookeeper.dir=/datapipeline/spark
+        -Dspark.eventLog.enabled=true
+        -Dspark.eventLog.dir=hdfs://hdfs-namenode:8020/spark-events
+    expose:
+      - 7078
+      - 8081
+    command: /opt/spark/sbin/start-slave.sh spark://spm:7077
