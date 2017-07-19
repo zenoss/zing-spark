@@ -1,7 +1,7 @@
 version: "3"
 services:
   spm:
-    image: ${CI_IMAGE:-zenoss/zing-spark:dev}
+    image: ${IMAGE:-zenoss/zing-spark:dev}
     build: .
     environment:
       SPARK_NO_DAEMONIZE: "true"
