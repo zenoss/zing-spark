@@ -1,6 +1,7 @@
 ARG SPARK_VERSION=2.2.0
 ARG HADOOP_VERSION=hadoop2.7
 
+
 FROM alpine:3.6 as build
 RUN apk add curl jq --update
 
