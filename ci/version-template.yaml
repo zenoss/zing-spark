@@ -1,6 +1,0 @@
-version: "3.2"
-services:
-  spark-master:
-    image: ${REMOTE_IMAGE}
-  spark-worker:
-    image: ${REMOTE_IMAGE}
