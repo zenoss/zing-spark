@@ -28,7 +28,7 @@ services:
       - 8080
     command: /opt/spark/sbin/start-master.sh
   spw:
-    image: zenoss/zing-spark:dev
+    image: ${SERVICE_IMAGE}:${IMAGE_TAG:-dev}
     environment:
       SPARK_NO_DAEMONIZE: "true"
       SPARK_WORKER_PORT: 7078
